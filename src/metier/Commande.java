@@ -8,6 +8,7 @@ public class Commande {
     /* propriétés privées */
     private int idCommande;
     private Date dateCommande;
+    private List<Ligne> lesLignes;
     
     /* getters et setters */
 
@@ -20,14 +21,21 @@ public class Commande {
     }
 
 
-    public Date getDateCommande() {
+    public Date getDate() {
         return dateCommande;
     }
 
-    public void setDateCommande(Date dateCommande) {
+    public List<Ligne> getLesLignes() {
+        return lesLignes;
+    }
+
+    public void setDate(Date dateCommande) {
         this.dateCommande = dateCommande;
     }
 
+    public void setLesLignes(List<Ligne> lesLignes) {
+        this.lesLignes = lesLignes;
+    }
 
     public Commande (int idCommande, Date dateCommande){
         /* Affectations */
@@ -44,13 +52,13 @@ public class Commande {
      * @param unArticle
      * @param qteCde 
      */
-  /*  public void ajouterLigne(Article unArticle, int qteCde) {
+    public void ajouterLigne(Article unArticle, int qteCde) {
         if (getLesLignes() == null) {
             setLesLignes(new ArrayList<Ligne>());
         }
         Ligne uneLigne = new Ligne(unArticle, qteCde);
         this.lesLignes.add(uneLigne);
-    }*/
+    }
 
     /**
      * Supprime la ligne passée en paramètre
@@ -68,8 +76,12 @@ public class Commande {
      * @param bdd objet Base de Données contenant la liste des articles
      */    
    public Ligne chercherLigne(int idArticle, BdD bdd) {
-        /* A compléter */
-        return /* A compléter */
+       for (Ligne ligne : getLesLignes()) {
+           if (ligne.getUnArticle().getIdArticle() == idArticle) {
+               return ligne;
+           }
+       }
+       return null;
     }
 
     /**
@@ -80,7 +92,12 @@ public class Commande {
      */
     public double valoriserCommande() {
         /* A compléter */
-        return /* A compléter */
+        double totalHT = 0.0;
+        for (Ligne ligne : getLesLignes()) {
+            double montantLigne = ligne.getUnArticle().getPrix() * ligne.getQteCommande();
+            totalHT += montantLigne;
+        }
+        return totalHT;
     }
 
 
